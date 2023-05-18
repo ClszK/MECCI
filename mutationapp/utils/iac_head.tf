@@ -1,5 +1,5 @@
 terraform {
-	required_version =">= 0.12"
+	required_version =">= 0.14"
 	required_providers {
 		openstack = {
 			source 	= "terraform-provider-openstack/openstack"
@@ -8,11 +8,8 @@ terraform {
 	}
 }
 
-provider openstack {
-	user_name		= "admin"
-	tenant_name		= "admin"
-	password		= "secret"
-	auth_url		= "http://172.30.1.17/identity"
+provider "openstack {
+	cloud = "flex_metal"
 }
 
 # Image creation
