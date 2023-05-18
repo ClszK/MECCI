@@ -1,10 +1,11 @@
 import openai
 import random
 import requests
+import os
 
 # openai.api_key = "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" # jeosong
 # openai.api_key = "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" # jehoon
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 subCommandList = ['만약 위 코드에 "openstack_compute_secgroup_v2" "https" 블럭이 없다면 해당 블럭을 추가해줘',
                   '만약 위 코드에 "openstack_compute_secgroup_v2" "icmp" 블럭이 없다면 해당 블럭을 추가해줘',
@@ -32,7 +33,7 @@ def mutateIaC(fileName):
     command = tail + "\n위 코드를 다음과 같은 규칙 하에 수정한 코드를 보여줘\n"
 
     origin = head + tail
-    mutation = f""
+    mutated = f""
 
     commands = []
     for i in range(10):
@@ -49,6 +50,7 @@ def mutateIaC(fileName):
         completion = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=[
                 {"role": "user", "content": f"{command}"}])
+        print(completion)
         assistant_content = completion.choices[0].message["content"].strip()
         f = open('mutatedIaC', 'w')
         f.write(assistant_content)
